@@ -28,7 +28,7 @@ export default function App() {
           <Route path="track" element={<TrackProducts />} />
           <Route path="history" element={<ProductHistory />} />
         </Route>
-        <Route>
+        <Route path="/manufacturer">
           <Route path="dashboard" element={<ManufacturerDashboard />} />
         </Route>
         <Route path="/distributor">

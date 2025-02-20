@@ -2,16 +2,13 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Tractor, 
-  Factory, 
   Truck, 
-  Store, 
   User,
   Package,
   History,
   Search,
   ListPlus,
   FileSpreadsheet,
-  Calendar,
   BarChart3,
   Leaf,
   ArrowRight,
@@ -20,7 +17,6 @@ import {
 } from 'lucide-react';
 
 export default function Dashboard() {
-  const [userRole] = useState('farmer');
   const [notifications] = useState(3);
 
   const quickStats = [
@@ -41,28 +37,28 @@ export default function Dashboard() {
       title: 'Add New Product',
       description: 'Register new organic products',
       icon: <ListPlus />,
-      link: '/products/add',
+      link: '/farmer/add',
       color: 'from-blue-500 to-blue-600'
     },
     {
       title: 'Track Products',
       description: 'Monitor your product journey',
       icon: <Search />,
-      link: '/products/track',
+      link: '/farmer/track',
       color: 'from-purple-500 to-purple-600'
     },
     {
       title: 'View History',
       description: 'Check past transactions',
       icon: <History />,
-      link: '/history',
+      link: '/farmer/history',
       color: 'from-orange-500 to-orange-600'
     },
     {
       title: 'Analytics',
       description: 'View performance metrics',
       icon: <BarChart3 />,
-      link: '/analytics',
+      link: '/farmer/analytics',
       color: 'from-green-500 to-green-600'
     }
   ];

@@ -2,25 +2,15 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Building2,
-  Store,
   Package,
   Boxes,
   ClipboardList,
-  History,
-  Search,
   BarChart3,
   Truck,
   Settings,
   Bell,
   User,
-  Plus,
-  FileSpreadsheet,
-  ArrowUpDown,
-  ListChecks,
-  DollarSign,
-  Users,
-  ShoppingCart
-} from 'lucide-react';
+  ListChecks} from 'lucide-react';
 
 // Distributor Dashboard
 export default function DistributorDashboard() {
