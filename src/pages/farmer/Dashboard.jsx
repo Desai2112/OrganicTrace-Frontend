@@ -89,9 +89,12 @@ export default function Dashboard() {
               <button className="text-gray-600 hover:text-gray-900 transition-colors">
                 <Settings className="w-6 h-6" />
               </button>
-              <button className="flex items-center text-gray-600 hover:text-gray-900">
+              <Link 
+                to="/farmer/profile" 
+                className="flex items-center text-gray-600 hover:text-gray-900 transition-colors"
+              >
                 <User className="w-6 h-6" />
-              </button>
+              </Link>
             </div>
           </div>
         </div>

@@ -12,7 +12,8 @@ import {
   Tag,
   Leaf,
   Upload,
-  Plus
+  Plus,
+  Loader2
 } from 'lucide-react';
 
 export default function AddProduct() {
@@ -27,7 +28,9 @@ export default function AddProduct() {
     description: '',
     certifications: []
   });
+  const [errors, setErrors] = useState({});
   const [image, setImage] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const certificationOptions = [
     'Organic',
@@ -44,10 +47,25 @@ export default function AddProduct() {
     }
   };
 
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.productName.trim()) newErrors.productName = 'Product name is required';
+    if (!formData.category) newErrors.category = 'Category is required';
+    if (!formData.harvestDate) newErrors.harvestDate = 'Harvest date is required';
+    if (!formData.quantity || formData.quantity <= 0) newErrors.quantity = 'Quantity must be greater than 0';
+    if (!formData.price || formData.price <= 0) newErrors.price = 'Price must be greater than 0';
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission
-    console.log(formData);
+    if (!validateForm()) return;
+    setIsSubmitting(true);
+    setTimeout(() => {
+      console.log(formData);
+      setIsSubmitting(false);
+    }, 2000); // Simulate submission delay
   };
 
   const handleCertificationToggle = (cert) => {
@@ -57,6 +75,34 @@ export default function AddProduct() {
         ? prev.certifications.filter(c => c !== cert)
         : [...prev.certifications, cert]
     }));
+  };
+
+  const resetForm = () => {
+    setFormData({
+      productName: '',
+      category: '',
+      harvestDate: '',
+      location: '',
+      quantity: '',
+      price: '',
+      description: '',
+      certifications: []
+    });
+    setImage(null);
+    setErrors({});
+  };
+
+  const detectLocation = () => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setFormData(prev => ({
+          ...prev,
+          location: `Lat: ${latitude}, Long: ${longitude}`,
+        }));
+      },
+      (error) => console.error('Error detecting location:', error)
+    );
   };
 
   return (
@@ -167,15 +213,18 @@ export default function AddProduct() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Product Name
+                      Product Name <span title="Enter the name of your product" className="text-gray-400 cursor-help">(?)</span>
                     </label>
                     <input
                       type="text"
                       value={formData.productName}
                       onChange={(e) => setFormData({...formData, productName: e.target.value})}
-                      className="block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 hover:border-green-300"
+                      className={`block w-full px-4 py-3 border rounded-xl shadow-sm transition-all duration-200 hover:border-green-300 focus:ring-2 focus:ring-green-500 focus:border-green-500 ${
+                        errors.productName ? 'border-red-500' : 'border-gray-300'
+                      }`}
                       placeholder="Enter product name"
                     />
+                    {errors.productName && <p className="text-red-500 text-sm mt-1">{errors.productName}</p>}
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -184,18 +233,19 @@ export default function AddProduct() {
                     <select
                       value={formData.category}
                       onChange={(e) => setFormData({...formData, category: e.target.value})}
-                      className="block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 hover:border-green-300"
+                      className={`block w-full px-4 py-3 border rounded-xl shadow-sm transition-all duration-200 hover:border-green-300 focus:ring-2 focus:ring-green-500 focus:border-green-500 ${
+                        errors.category ? 'border-red-500' : 'border-gray-300'
+                      }`}
                     >
                       <option value="">Select category</option>
                       <option value="vegetables">Vegetables</option>
                       <option value="fruits">Fruits</option>
+                      <option value="dairy">Dairy</option>
                       <option value="grains">Grains</option>
-                      <option value="herbs">Herbs</option>
+                      <option value="meat">Meat</option>
                     </select>
+                    {errors.category && <p className="text-red-500 text-sm mt-1">{errors.category}</p>}
                   </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Harvest Date
@@ -205,10 +255,13 @@ export default function AddProduct() {
                         type="date"
                         value={formData.harvestDate}
                         onChange={(e) => setFormData({...formData, harvestDate: e.target.value})}
-                        className="block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 hover:border-green-300"
+                        className={`block w-full px-4 py-3 border rounded-xl shadow-sm transition-all duration-200 hover:border-green-300 focus:ring-2 focus:ring-green-500 focus:border-green-500 ${
+                          errors.harvestDate ? 'border-red-500' : 'border-gray-300'
+                        }`}
                       />
-                      <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                      <Calendar className="absolute right-3 top-3 w-5 h-5 text-gray-400 pointer-events-none" />
                     </div>
+                    {errors.harvestDate && <p className="text-red-500 text-sm mt-1">{errors.harvestDate}</p>}
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -219,44 +272,49 @@ export default function AddProduct() {
                         type="text"
                         value={formData.location}
                         onChange={(e) => setFormData({...formData, location: e.target.value})}
-                        className="block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 hover:border-green-300"
-                        placeholder="Farm location"
+                        className="block w-full px-4 py-3 border rounded-xl shadow-sm transition-all duration-200 hover:border-green-300 focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                        placeholder="Enter location"
                       />
-                      <MapPin className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                      <button
+                        type="button"
+                        onClick={detectLocation}
+                        className="absolute right-3 top-3 bg-green-500 hover:bg-green-600 text-white p-2 rounded-full"
+                      >
+                        <MapPin className="w-4 h-4" />
+                      </button>
                     </div>
                   </div>
                 </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Quantity (kg)
-                    </label>
-                    <input
-                      type="number"
-                      value={formData.quantity}
-                      onChange={(e) => setFormData({...formData, quantity: e.target.value})}
-                      className="block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 hover:border-green-300"
-                      placeholder="Enter quantity"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Price per kg ($)
-                    </label>
-                    <div className="relative">
-                      <input
-                        type="number"
-                        value={formData.price}
-                        onChange={(e) => setFormData({...formData, price: e.target.value})}
-                        className="block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 hover:border-green-300"
-                        placeholder="Enter price"
-                      />
-                      <Tag className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                    </div>
-                  </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Quantity
+                  </label>
+                  <input
+                    type="number"
+                    value={formData.quantity}
+                    onChange={(e) => setFormData({...formData, quantity: e.target.value})}
+                    className={`block w-full px-4 py-3 border rounded-xl shadow-sm transition-all duration-200 hover:border-green-300 focus:ring-2 focus:ring-green-500 focus:border-green-500 ${
+                      errors.quantity ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                    placeholder="Enter quantity"
+                  />
+                  {errors.quantity && <p className="text-red-500 text-sm mt-1">{errors.quantity}</p>}
                 </div>
-
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Price
+                  </label>
+                  <input
+                    type="number"
+                    value={formData.price}
+                    onChange={(e) => setFormData({...formData, price: e.target.value})}
+                    className={`block w-full px-4 py-3 border rounded-xl shadow-sm transition-all duration-200 hover:border-green-300 focus:ring-2 focus:ring-green-500 focus:border-green-500 ${
+                      errors.price ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                    placeholder="Enter price"
+                  />
+                  {errors.price && <p className="text-red-500 text-sm mt-1">{errors.price}</p>}
+                </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Description
@@ -265,24 +323,25 @@ export default function AddProduct() {
                     value={formData.description}
                     onChange={(e) => setFormData({...formData, description: e.target.value})}
                     rows={4}
-                    className="block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 hover:border-green-300"
+                    className="block w-full px-4 py-3 border rounded-xl shadow-sm transition-all duration-200 hover:border-green-300 focus:ring-2 focus:ring-green-500 focus:border-green-500"
                     placeholder="Enter product description"
                   />
                 </div>
-
-                <div className="flex justify-end space-x-4">
-                  <Link
-                    to="/dashboard"
-                    className="px-6 py-3 border border-gray-300 rounded-xl text-gray-700 hover:bg-gray-50 transition-colors"
+                <div className="flex justify-end gap-3">
+                  <button
+                    type="button"
+                    onClick={resetForm}
+                    className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-3 rounded-xl"
                   >
-                    Cancel
-                  </Link>
+                    Reset
+                  </button>
                   <button
                     type="submit"
-                    className="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white rounded-xl shadow-md hover:shadow-lg transition-all duration-200 flex items-center"
+                    disabled={isSubmitting}
+                    className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-xl flex items-center gap-2"
                   >
-                    <Plus className="w-5 h-5 mr-2" />
-                    Add Product
+                    {isSubmitting && <Loader2 className="w-5 h-5 animate-spin" />}
+                    Submit
                   </button>
                 </div>
               </div>
@@ -292,4 +351,4 @@ export default function AddProduct() {
       </main>
     </div>
   );
-} 
+}

@@ -13,7 +13,14 @@ import CertificationRequests from "./pages/Certifying Agencies/CertificationRequ
 import AuditSchedule from "./pages/Certifying Agencies/AuditSchedule";
 import Certifications from "./pages/Certifying Agencies/Certifications";
 import ComplianceReports from "./pages/Certifying Agencies/ComplianceReports";
-import Analytics from "./pages/Certifying Agencies/Analytics";
+import Analytics from "./pages/farmer/Analytics";
+import Profile from "./pages/farmer/Profile";
+import Inventory from "./pages/Distributor/Inventory";
+import Orders from "./pages/Distributor/Orders";
+import Deliveries from "./pages/Distributor/Deliveries";
+import SupplyChain from "./pages/Distributor/SupplyChain";
+import NewProduct from "./pages/manufacturer/NewProduct";
+import QualityControl from "./pages/manufacturer/QualityControl";
 
 export default function App() {
   return (
@@ -27,12 +34,22 @@ export default function App() {
           <Route path="add" element={<AddProduct />} />
           <Route path="track" element={<TrackProducts />} />
           <Route path="history" element={<ProductHistory />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="analytics" element={<Analytics />} />
         </Route>
         <Route path="/manufacturer">
           <Route path="dashboard" element={<ManufacturerDashboard />} />
+          <Route path="new-product" element={<NewProduct />} />
+          <Route path="orders" element={<Orders />} />
+          <Route path="quality-control" element={<QualityControl />} />
+          <Route path="track-products" element={<TrackProducts />} />
         </Route>
         <Route path="/distributor">
           <Route path="dashboard" element={<DistributorDashboard />} />
+          <Route path="inventory" element={<Inventory />} />
+          <Route path="orders" element={<Orders />} />
+          <Route path="deliveries" element={<Deliveries />} />
+          <Route path="supply-chain" element={<SupplyChain />} />
         </Route>
         <Route path="/certification">
           <Route path="dashboard" element={<CertificationDashboard />} />

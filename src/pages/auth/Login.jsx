@@ -16,7 +16,10 @@ export default function Login() {
     try {
       const response = await axios.post(
         "http://localhost:5000/api/auth/login",
-        formData
+        formData,
+        {
+          withCredentials: true,
+        }
       );
       if (response.data.success) {
         navigate(`/${response.data.data.role}/dashboard`);
