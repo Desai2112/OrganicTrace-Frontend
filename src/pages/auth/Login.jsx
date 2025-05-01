@@ -22,7 +22,11 @@ export default function Login() {
         }
       );
       if (response.data.success) {
-        navigate(`/${response.data.data.role}/dashboard`);
+        if (response.data.data.role === "certifier") {
+          navigate("/certification/dashboard");
+        } else {
+          navigate(`/${response.data.data.role}/dashboard`);
+        }
       } else {
         console.log(response.data);
         setError(response.data.message || "Invalid credentials");

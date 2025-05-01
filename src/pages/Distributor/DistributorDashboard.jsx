@@ -1,212 +1,206 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import {
-  Building2,
-  Package,
-  Boxes,
-  ClipboardList,
-  BarChart3,
-  Truck,
-  Settings,
-  Bell,
+import { 
+  Package, 
+  ShoppingCart, 
+  Truck, 
+  AlertCircle, 
+  BarChart3, 
+  BoxesIcon, 
+  Workflow,
   User,
-  ListChecks,
+  LogOut,
+  Settings,
+  Search,
+  RefreshCw
 } from "lucide-react";
 
-// Distributor Dashboard
-export default function DistributorDashboard() {
-  const [notifications] = useState(5);
-
-  const quickActions = [
+const DistributorDashboard = () => {
+  const quickStats = [
     {
-      title: "Manage Inventory",
-      description: "Update stock levels and locations",
-      icon: <Boxes />,
-      link: "/distributor/inventory",
-      color: "bg-blue-100 text-blue-600",
+      icon: <Package className="text-blue-500" size={20} />,
+      label: "Products",
+      value: 0,
+      color: "bg-blue-50 text-blue-600 border-blue-200",
     },
     {
-      title: "Process Orders",
-      description: "Handle incoming and outgoing orders",
-      icon: <ClipboardList />,
-      link: "/distributor/orders",
-      color: "bg-purple-100 text-purple-600",
+      icon: <ShoppingCart className="text-purple-500" size={20} />,
+      label: "Orders",
+      value: 0,
+      color: "bg-purple-50 text-purple-600 border-purple-200",
     },
     {
-      title: "Schedule Deliveries",
-      description: "Plan and track shipments",
-      icon: <Truck />,
-      link: "/distributor/deliveries",
-      color: "bg-orange-100 text-orange-600",
+      icon: <Truck className="text-green-500" size={20} />,
+      label: "Shipments",
+      value: 0,
+      color: "bg-green-50 text-green-600 border-green-200",
     },
     {
-      title: "Supply Chain",
-      description: "Monitor supply chain metrics",
-      icon: <BarChart3 />,
-      link: "/distributor/supply-chain",
-      color: "bg-green-100 text-green-600",
-    },
+      icon: <AlertCircle className="text-amber-500" size={20} />,
+      label: "Low Stock",
+      value: 0,
+      color: "bg-amber-50 text-amber-600 border-amber-200",
+    }
   ];
 
-  const distributionMetrics = [
-    { label: "Active Orders", value: "234", change: "+8%" },
-    { label: "On-Time Delivery", value: "96%", change: "+1%" },
-    { label: "Inventory Level", value: "85%", change: "-2%" },
-    { label: "Revenue", value: "$45.2K", change: "+15%" },
+  const featureCards = [
+    {
+      icon: <ShoppingCart className="text-purple-500" size={24} />,
+      title: "Orders",
+      description: "Process and manage customer orders efficiently.",
+      link: "/distributor/orders",
+    },
+    {
+      icon: <Workflow className="text-green-500" size={24} />,
+      title: "Supply Chain",
+      description: "Monitor product movement through the supply chain.",
+      link: "/distributor/supply-chain",
+    }
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100">
-      {/* Header */}
-      <header className="bg-white shadow-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <Building2 className="w-8 h-8 text-blue-600" />
-              <h1 className="ml-3 text-2xl font-bold text-gray-900">
-                Distribution Center
-              </h1>
-            </div>
-            <div className="flex items-center space-x-6">
-              <button className="relative text-gray-600 hover:text-gray-900">
-                <Bell className="w-6 h-6" />
-                {notifications > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                    {notifications}
-                  </span>
-                )}
-              </button>
-              <button className="text-gray-600 hover:text-gray-900">
-                <Settings className="w-6 h-6" />
-              </button>
-              <button className="flex items-center text-gray-600 hover:text-gray-900">
-                <User className="w-6 h-6" />
-                <span className="ml-2">Profile</span>
-              </button>
+    <div className="min-h-screen bg-gray-50">
+      {/* Sidebar */}
+      <div className="fixed h-full w-16 lg:w-64 bg-white shadow-lg z-50">
+        <div className="flex flex-col h-full">
+          <div className="p-4 border-b border-gray-100">
+            <div className="flex items-center justify-center lg:justify-start">
+              <div className="bg-blue-500 p-2 rounded-lg">
+                <BoxesIcon className="w-6 h-6 text-white" />
+              </div>
+              <h1 className="text-xl font-bold text-blue-600 ml-3 hidden lg:block">TrackChain</h1>
             </div>
           </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Metrics Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {distributionMetrics.map((metric, index) => (
-            <div key={index} className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="text-sm font-medium text-gray-500">
-                {metric.label}
-              </h3>
-              <div className="mt-2 flex items-baseline">
-                <p className="text-2xl font-semibold text-gray-900">
-                  {metric.value}
-                </p>
-                <span
-                  className={`ml-2 text-sm font-medium ${
-                    metric.change.startsWith("+")
-                      ? "text-green-600"
-                      : "text-red-600"
-                  }`}
-                >
-                  {metric.change}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {quickActions.map((action, index) => (
-            <Link
-              key={index}
-              to={action.link}
-              className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200"
-            >
-              <div
-                className={`flex items-center justify-center w-12 h-12 ${action.color} rounded-lg mb-4`}
-              >
-                {React.cloneElement(action.icon, { className: "w-6 h-6" })}
-              </div>
-              <h3 className="text-lg font-medium text-gray-900">
-                {action.title}
-              </h3>
-              <p className="mt-2 text-sm text-gray-600">{action.description}</p>
-            </Link>
-          ))}
-        </div>
-
-        {/* Delivery Schedule and Activity */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Delivery Schedule */}
-          <div className="lg:col-span-2 bg-white rounded-lg shadow-md p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">
-                Delivery Schedule
-              </h3>
-              <Link
-                to="/schedule"
-                className="text-blue-600 hover:text-blue-700 text-sm font-medium"
-              >
-                View All
+          
+          <nav className="flex-1 overflow-y-auto py-4">
+            <ul className="space-y-2 px-2">
+              <li>
+                <Link to="/distributor/dashboard" className="flex items-center p-3 text-blue-600 bg-blue-50 rounded-lg font-medium">
+                  <BarChart3 className="w-5 h-5" />
+                  <span className="ml-3 hidden lg:block">Dashboard</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/distributor/orders" className="flex items-center p-3 text-gray-600 rounded-lg hover:bg-blue-50 hover:text-blue-600 group">
+                  <ShoppingCart className="w-5 h-5" />
+                  <span className="ml-3 hidden lg:block">Orders</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/distributor/supply-chain" className="flex items-center p-3 text-gray-600 rounded-lg hover:bg-blue-50 hover:text-blue-600 group">
+                  <Workflow className="w-5 h-5" />
+                  <span className="ml-3 hidden lg:block">Supply Chain</span>
+                </Link>
+              </li>
+            </ul>
+          </nav>
+          
+          <div className="p-4 border-t border-gray-100">
+            <div className="space-y-2">
+              <Link to="/distributor/profile" className="flex items-center p-3 text-gray-600 rounded-lg hover:bg-gray-100 groupAscendant.transition-colors">
+                <User className="w-5 h-5" />
+                <span className="ml-3 hidden lg:block">Profile</span>
               </Link>
-            </div>
-            <div className="space-y-4">
-              {[1, 2, 3].map((item) => (
-                <div
-                  key={item}
-                  className="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
-                >
-                  <div className="flex items-center">
-                    <Truck className="w-5 h-5 text-gray-500" />
-                    <div className="ml-4">
-                      <p className="text-sm font-medium text-gray-900">
-                        Delivery Route #{item}
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        5 Stops • ETA: 2h {item}0m
-                      </p>
-                    </div>
-                  </div>
-                  <span className="text-sm text-blue-600">In Transit</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Inventory Alerts */}
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">
-              Inventory Alerts
-            </h3>
-            <div className="space-y-4">
-              <div className="flex items-center p-3 bg-red-50 rounded-lg">
-                <Boxes className="w-5 h-5 text-red-500" />
-                <div className="ml-3">
-                  <p className="text-sm text-gray-900">Low Stock Alert</p>
-                  <p className="text-xs text-gray-500">Product ID #1234</p>
-                </div>
-              </div>
-              <div className="flex items-center p-3 bg-yellow-50 rounded-lg">
-                <Package className="w-5 h-5 text-yellow-500" />
-                <div className="ml-3">
-                  <p className="text-sm text-gray-900">Pending Restocks</p>
-                  <p className="text-xs text-gray-500">
-                    3 items need attention
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center p-3 bg-green-50 rounded-lg">
-                <ListChecks className="w-5 h-5 text-green-500" />
-                <div className="ml-3">
-                  <p className="text-sm text-gray-900">Stock Check Complete</p>
-                  <p className="text-xs text-gray-500">Zone A-C verified</p>
-                </div>
-              </div>
+              <Link to="/distributor/settings" className="flex items-center p-3 text-gray-600 rounded-lg hover:bg-gray-100 group">
+                <Settings className="w-5 h-5" />
+                <span className="ml-3 hidden lg:block">Settings</span>
+              </Link>
+              <button className="flex items-center w-full p-3 text-gray-600 rounded-lg hover:bg-red-50 hover:text-red-600 group">
+                <LogOut className="w-5 h-5" />
+                <span className="ml-3 hidden lg:block">Log Out</span>
+              </button>
             </div>
           </div>
         </div>
-      </main>
+      </div>
+
+      {/* Main content */}
+      <div className="pl-16 lg:pl-64">
+        <header className="bg-white shadow-sm sticky top-0 z-40">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div className="flex items-center justify-between">
+              <h1 className="text-2xl font-semibold text-gray-800">Distribution Center</h1>
+              
+              <div className="flex items-center space-x-3">
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <Search className="w-4 h-4 text-gray-400" />
+                  </div>
+                  <input
+                    type="search"
+                    className="pl-10 p-2 bg-gray-50 border border-gray-200 rounded-lg w-64 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Search dashboard..."
+                  />
+                </div>
+                
+                <button 
+                  className="p-2 text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg"
+                  title="Refresh Data"
+                >
+                  <RefreshCw size={18} />
+                </button>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* Welcome Section */}
+          <div className="bg-white rounded-lg shadow-sm p-6 mb-8 border border-gray-100">
+            <h2 className="text-xl font-semibold text-gray-900">
+              Welcome to your Distribution Center
+            </h2>
+            <p className="mt-2 text-gray-600">
+              Monitor your inventory, process orders, and track shipments from one central location
+            </p>
+          </div>
+
+          {/* Quick Stats */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            {quickStats.map((stat, index) => (
+              <div
+                key={index}
+                className={`rounded-lg border p-6 ${stat.color} hover:shadow-md transition-shadow`}
+              >
+                <div className="flex items-center mb-2">
+                  {stat.icon}
+                  <p className="text-sm ml-2">{stat.label}</p>
+                </div>
+                <p className="text-3xl font-bold">{stat.value}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Feature Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {featureCards.map((card, index) => (
+              <Link
+                key={index}
+                to={card.link}
+                className="bg-white rounded-lg shadow-sm p-6 border border-gray-100 hover:shadow-md transition-shadow group"
+              >
+                <div className="flex items-center mb-3">
+                  {card.icon}
+                  <h2 className="text-lg font-medium text-gray-900 ml-2">
+                    {card.title}
+                  </h2>
+                </div>
+                <p className="text-gray-500 text-sm leading-relaxed mb-4">
+                  {card.description}
+                </p>
+                <div className="flex items-center text-sm font-medium text-blue-600 group-hover:text-blue-700">
+                  Access Now
+                  <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </main>
+      </div>
     </div>
   );
-}
+};
+
+export default DistributorDashboard;

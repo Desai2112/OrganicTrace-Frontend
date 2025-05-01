@@ -101,6 +101,8 @@ export default function Register() {
             contact: formData.company.contact,
             registrationNumber: formData.company.registrationNumber,
           },
+        },{
+          withCredentials: true,
         }
       );
 
