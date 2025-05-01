@@ -318,7 +318,7 @@ export default function LandingPage() {
               viewport={{ once: true }}
             >
               <img
-                src="/images/organic-farming.jpg"
+                src="https://res.cloudinary.com/dgwtgr6do/image/upload/v1746113722/nrd-D6Tu_L3chLE-unsplash_tfgocr.jpg"
                 alt="Organic Farming"
                 className="rounded-2xl shadow-2xl"
               />
@@ -431,7 +431,7 @@ export default function LandingPage() {
       <footer className="bg-white py-12 border-t border-green-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
+            {/* <div>
               <div className="flex items-center space-x-2">
                 <div className="bg-gradient-to-r from-green-600 to-emerald-600 p-2 rounded-lg">
                   <ShieldCheck className="w-6 h-6 text-white" />
@@ -444,8 +444,8 @@ export default function LandingPage() {
                 Secure and transparent organic certification management powered
                 by blockchain.
               </p>
-            </div>
-            {["Solutions", "Company", "Legal"].map((section, index) => (
+            </div> */}
+            {/* {["Solutions", "Company", "Legal"].map((section, index) => (
               <div key={index}>
                 <h4 className="text-sm font-semibold text-gray-900 uppercase mb-4">
                   {section}
@@ -464,7 +464,7 @@ export default function LandingPage() {
                   ))}
                 </ul>
               </div>
-            ))}
+            ))} */}
           </div>
           <div className="mt-8 pt-8 border-t border-green-100 text-center text-gray-600">
             <p>&copy; 2024 OrganicChain. All rights reserved.</p>
